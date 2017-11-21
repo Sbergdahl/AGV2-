@@ -1,6 +1,6 @@
 import networkx as nx
 # takes a directed graph and returns a new graph,
-#  that is exanded to indlude a time dimension
+#  that is exanded to indlude a time dimension and "self loops"
 
 def addTimeDimension(graph,nodes,edges,timeSteps):
 		addSelfLoops(graph,nodes,edges)

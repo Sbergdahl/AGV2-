@@ -8,25 +8,32 @@ def plotGraph(graph):
 	plt.show() # Need this to see a plot
 	return
 
-def addTimeDimension(graph,nodesInGraph,edgesInGraph,timesteps):
-	for time in range(0,timesteps):	
-	   for nodes, line in enumerate(nodesInGraph):
-	      nodesInGraph[nodes]=nodesInGraph[nodes]+10
-	   graph.add_nodes_from(nodesInGraph)
-
-	   for edges, line in enumerate(edgesInGraph):
-	      edgesInGraph[edges]=(edgesInGraph[edges][0]+10),edgesInGraph[edges][1]+10
-	   graph.add_edges_from(edgesInGraph)
-	return graph
 
 def throughTimeAndSpace(graph,start,end,timesteps):
 	for i in range(0,timesteps):
 		try: 
-			resA1 =  nx.astar_path(graph,start,end+10*i)
+			res =  nx.astar_path(graph,start,end+10*i)
 			break 
 	   	except: 
 			pass
-	return resA1
+	return res
 
+# add the t+1 node to the reserved nodes
+def reserveAndRemove(graph,reserved):
+	res=reserveNodes(reserved)
+	graph=removeReserved(graph,res)
+	return graph
 
+# adds current node in t+1 to the list of reserved nodes
+def reserveNodes(reserved):
+	stop = len(reserved)
+	for i in range(0,stop-1):
+		reserved.append(reserved[i]+10)
+	return reserved
 
+# returns a copy of the graph with the reserved nodes removed
+def removeReserved(graph,reserved):
+	Gtmp= graph.copy(as_view=False)
+	for i in range(0,len(reserved)):
+		Gtmp.remove_node(reserved[i])
+	return Gtmp
