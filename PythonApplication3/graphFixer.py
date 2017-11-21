@@ -2,10 +2,10 @@ import networkx as nx
 # takes a directed graph and returns a new graph,
 #  that is exanded to indlude a time dimension
 
-def addTimeDimension(graph,nodes,edges):
-		addSelfLoops(graph,edges)
-		addTimeNodes(nodes)
-		addTimeEdges(edges)
+def addTimeDimension(graph,nodes,edges,timeSteps):
+		addSelfLoops(graph,nodes,edges)
+		addTimeNodes(graph,nodes,timeSteps)
+		addTimeEdges(graph,edges,timeSteps)
 		return graph
 	
 def addSelfLoops(graph,nodes,edges):
@@ -21,12 +21,13 @@ def addTimeNodes(graph,nodes,timeSteps):
 		graph.add_nodes_from(nodes)
 	return nodes
 
-def addTimeEdges(edges,timeSteps):
+def addTimeEdges(graph,edges,timeSteps):
 	for i, line in enumerate(edges):
 		 edges[i]=(edges[i][0]),edges[i][1]+10
-		 graph.add_edges_from(edges)
+	graph.add_edges_from(edges)
 	for time in range(0,timeSteps):
 		for i, line in enumerate(edges):
 			edges[i]=(edges[i][0]+10),edges[i][1]+10
+		graph.add_edges_from(edges)
 	return edges
 

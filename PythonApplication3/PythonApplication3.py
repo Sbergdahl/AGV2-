@@ -4,20 +4,20 @@ from helpers import *
 from graphFixer import * 
 
 
-G = nx.Graph()
+G = nx.DiGraph()
 nodes_of_graph = [1,2,3,4,5,6]
 G.add_nodes_from(nodes_of_graph)
-edges = [(1,2),(2,3),(3,4),(4,5),(5,6),(6,1),(2,6),(3,5)]
-G.add_edges_from(edges)
+edges = [(1,2),(2,1),(3,2),(2,3),(4,3),(3,4),(5,4),(4,5),(6,5),(5,6),(1,6),(6,1),(6,2),(2,6),(5,3),(3,5)]
+#G.add_edges_from(edges)
 
 
 
 
 # function for adding timesteps automatically
 
-
-addSelfLoops(G,nodes_of_graph,edges)
-addTimeEdges(edges,10)
+G=addTimeDimension(G, nodes_of_graph,edges,10)
+#addSelfLoops(G,nodes_of_graph,edges)
+#addTimeEdges(G,edges,10)
 
 
 
@@ -52,11 +52,11 @@ G2= addTimeDimension(G2,nodes_of_graph,edges_in_g2,time)
 #	   
 #	except: 
 #		pass
-resA1 =  throughTimeAndSpace(G2,1,5,time)
+resA1 =  throughTimeAndSpace(G,1,5,time)
 print "path for A1 is:"
 print resA1
 
-resA2 = throughTimeAndSpace(G2,4,6,time)
+resA2 = throughTimeAndSpace(G,4,6,time)
 print "path for A2 is:"
 print resA2
 
@@ -77,7 +77,7 @@ print "resA2:"
 print resA2
 # ta bort de noder som finns i resA2 och resA1
 
-G2tmp= G2.copy(as_view=False)
+G2tmp= G.copy(as_view=False)
 
 #ta bort de noder som finns i A1 
 for i in range(0,len(resA1)):
