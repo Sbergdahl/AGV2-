@@ -2,20 +2,37 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from helpers import * 
 from graphFixer import * 
+from graphNetwork import * 
 
 # The code is in file is chaotic since it's mostly been used to 
 # fin errors in the helper functions
+# note that most ofthe code below is just intended for testing different help functions 
 
-# declare graph
+# declare  directed graph
+
 G = nx.DiGraph()
-nodes_of_graph = [1,2,3,4,5,6]
+nodes_of_graph = ['1','2','3','4','5','6']
+#nodes_of_graph[0].append('.1')
 G.add_nodes_from(nodes_of_graph)
-edges = [(1,2),(2,1),(3,2),(2,3),(4,3),(3,4),(5,4),(4,5),(6,5),(5,6),(1,6),(6,1),(6,2),(2,6),(5,3),(3,5)]
+edges = [('1','2'),('2','1'),('3','2'),('2','3'),('4','3'),('3','4'),('5','4'),('4','5'),('6','5'),('5','6'),('1','6'),('6','1'),('6','2'),('2','6'),('5','3'),('3','5')]
+G.add_edges_from(edges)
+G = addTimeSuffixes(G,nodes_of_graph,edges)
+
+print nx.astar_path(G,'1.0','4.0')
+
+#edges = addTimeToEdges(edges)
+# how many steps are added in the time dimension? 
 time= 10
+
+
+
+
+Gderp = graphNetworkFromFile()
 
 # add the time 
 G=addTimeDimension(G, nodes_of_graph,edges,time)
 
+# declare start and stop positions for each of the agents 
 startA1= 1 
 stopA1= 5
 

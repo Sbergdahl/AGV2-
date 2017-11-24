@@ -1,6 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
+
+# plots out the graph G with numbered nodes 
 def plotGraph(graph):
 	plt.plot() # Create a plot
 	nx.draw(graph, with_labels=True, font_weight='bold',node_size=10)
@@ -9,14 +11,15 @@ def plotGraph(graph):
 	return
 
 
+# creates a route for the selected agent in the time expanded graph. 
 def throughTimeAndSpace(graph,start,end,timesteps):
 	for i in range(0,timesteps):
 		try: 
-			res =  nx.astar_path(graph,start,end+10*i)
+			res =  nx.astar_path(graph,start,end+.10*i)
 			break 
 	   	except: 
 			pass
-	return res
+ 	return res
 
 # add the t+1 node to the reserved nodes
 def reserveAndRemove(graph,reserved):
@@ -28,7 +31,7 @@ def reserveAndRemove(graph,reserved):
 def reserveNodes(reserved):
 	stop = len(reserved)
 	for i in range(0,stop-1):
-		reserved.append(reserved[i]+10)
+		reserved.append(reserved[i]+.10)
 	return reserved
 
 # returns a copy of the graph with the reserved nodes removed
