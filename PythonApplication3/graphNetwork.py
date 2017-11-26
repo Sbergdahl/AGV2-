@@ -4,7 +4,7 @@ import random
 
 def graphNetworkFromFile():
 
-	G=nx.Graph() # Create a graph
+	G=nx.DiGraph() # Create a graph
 	gDict ={} # A dictionary of nodes is needed (hashmap)
 	edgeLabels = {} # A dictionary of edges (hashmap),
 	with open('layout.txt','r') as f: # Open the file

@@ -25,21 +25,41 @@ print nx.astar_path(G,'1.0','4.0')
 time= 10
 
 
-
+# for testing with Kollmorgens graph
 
 Gderp = graphNetworkFromFile()
+
+
+Gderp2 = graphNetworkFromFile() # testting for seeing if time can be reduced by using a metric of minimum amout of steps needed
+minsteps=len(nx.astar_path(Gderp2,str(10061),str(10055)))
+
+GderpNodes=list(Gderp.nodes)
+GderpEdges=list(Gderp.edges)
+
+Gderp = addTimeSuffixes(Gderp,GderpNodes,GderpEdges)
+Gderp = addTimeDimension(Gderp,GderpNodes,GderpEdges,100)
+
+resA1 =  throughTimeAndSpace(Gderp,10060,58,100,1)
+print resA1
+resA1=reserveNodes(resA1)
+Gtmp=removeReserved(Gderp,resA1)
+
+resA2=throughTimeAndSpace(Gderp,10061,10055,100,minsteps)
+print resA2
 
 # add the time 
 G=addTimeDimension(G, nodes_of_graph,edges,time)
 
+print G.nodes
+
 # declare start and stop positions for each of the agents 
-startA1= 1 
+startA1= 1
 stopA1= 5
 
-startA2= 4 
+startA2= 4
 stopA2= 6 
 
-startA3= 2 
+startA3= 2
 stopA3= 4 
 
 resA1 =  throughTimeAndSpace(G,startA1,stopA1,time)
