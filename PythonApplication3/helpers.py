@@ -11,11 +11,25 @@ def plotGraph(graph):
 	return
 
 
+
+
+
 # creates a route for the selected agent in the time expanded graph. 
-def throughTimeAndSpace(graph,start,end,timesteps):
-	for i in range(0,timesteps):
+def throughTimeAndSpace(graph,originalGraph,start,end,timesteps):
+	#minsteps=len(nx.astar_path(originalGraph,str(start),str(end)))
+	minsteps=1
+	start= str(start)+'.0'
+	
+	for i in range(minsteps-1,timesteps):
+		
+		timenr=1*i
+		timestr='.'+str(timenr)
+		print start
+		print str(end)+timestr
+
+		
 		try: 
-			res =  nx.astar_path(graph,start,end+.10*i)
+			res =  nx.astar_path(graph,str(start),str(end)+timestr)
 			break 
 	   	except: 
 			pass
@@ -31,12 +45,17 @@ def reserveAndRemove(graph,reserved):
 def reserveNodes(reserved):
 	stop = len(reserved)
 	for i in range(0,stop-1):
-		reserved.append(reserved[i]+.10)
+		timenr=1*(i+1)
+		timestr='.'+str(timenr)
+		reservedTmp = reserved[i].split('.')
+		reservedTmp = reservedTmp[0]+timestr
+		if reservedTmp not in reserved:
+			reserved.append(reservedTmp)
 	return reserved
 
 # returns a copy of the graph with the reserved nodes removed
 def removeReserved(graph,reserved):
-	Gtmp= graph.copy(as_view=False)
+	#Gtmp= graph.copy(as_view=False)
 	for i in range(0,len(reserved)):
-		Gtmp.remove_node(reserved[i])
-	return Gtmp
+		graph.remove_node(reserved[i])
+	return graph

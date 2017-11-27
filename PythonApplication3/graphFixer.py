@@ -4,9 +4,11 @@ import networkx as nx
 
 # expands the graph in a second dimensions for time, note that the graph is directed so that it is only possible to go forward in time 
 def addTimeDimension(graph,nodes,edges,timeSteps):
+		addTimeSuffixes(graph,nodes,edges)
 		addSelfLoops(graph,nodes,edges)
 		addTimeNodes(graph,nodes,timeSteps)
 		addTimeEdges(graph,edges,timeSteps)
+		
 		return graph
 
 
@@ -19,23 +21,55 @@ def addSelfLoops(graph,nodes,edges):
 
 # adds nodes for next timestep 
 def addTimeNodes(graph,nodes,timeSteps):
-	for i in range(0,timeSteps):
+	
+	for i in range(1,timeSteps):
+		time=1*i
+		timestr=str(time)
 		for j in range(0,len(nodes)):
-			nodes[j]=nodes[j]+10
+
+			new_node= nodes[j].split('.')
+			nodes[j]=new_node[0]+'.'+timestr
 		graph.add_nodes_from(nodes)
-	return nodes
+	return graph
 
 # adds edges forward in time. also changes the edges of the graph in order to make it directed forward in time 
 def addTimeEdges(graph,edges,timeSteps):
+	#remove the original edges
+	graph.remove_edges_from(edges)
+
+	# here starts the string manipulation which is a bit messy
+	timestr='.1'
 	for i, line in enumerate(edges):
-		 edges[i]=(edges[i][0]),edges[i][1]+10
+
+		new_edge= edges[i][1].split('.')
+		new_edge= new_edge[0]+timestr
+		new_edge=edges[i][0],new_edge
+		edges[i]=new_edge
 	graph.add_edges_from(edges)
-	for time in range(0,timeSteps):
+
+	for time in range(1,timeSteps):
+		timenr=1*time
+		timestr=str(timenr)
+		if time !=0:
+			timestrNxt=str(timenr+1)
 		for i, line in enumerate(edges):
-			edges[i]=(edges[i][0]+10),edges[i][1]+10
+			new_edge= edges[i][0].split('.') # split each part of the edge and add the time step
+			new_edgeNxt =edges[i][1].split('.')
+
+			new_edge= new_edge[0]+'.'+timestr
+			new_edgeNxt = new_edgeNxt[0]+'.'+timestrNxt
+
+			# add each part of the new edge together
+			#new_edge=new_edge,new_edgeNxt
+
+			edges[i]=new_edge,new_edgeNxt
+
+
+			
 		graph.add_edges_from(edges)
 	return edges
 
+# adds time siffixes
 def addTimeSuffixes(graph,nodes,edges):
 	graph = addNodeTimeSuffix(nodes,graph)
 	graph = addEdgeTimeSuffix(edges,graph)
@@ -49,6 +83,7 @@ def addNodeTimeSuffix(nodes,graph):
 		nodes[i]+=timestr
 	graph.add_nodes_from(nodes)
 	return graph
+
 #adds the time suffix to inputed edges
 def addEdgeTimeSuffix(edges,graph):
 	graph.remove_edges_from(edges)
